@@ -40,24 +40,41 @@
             let tweet = {
                 tweetId : document.getElementById("tweetId").value,
             }
-            fetch("http://localhost:3000/tweets/" + tweet.tweetId, {
+            // fetch("http://localhost:3000/tweets/" + tweet.tweetId, {
+            //     method: 'GET',
+            //     headers: {
+            //         'Content-Type': 'application/json'
+            //     },
+            //     body: JSON.stringify(tweet),
+            // }).then((response) => {
+            //     if(response.status == 200){
+            //     } else if(response.status == 404){
+            //         alert("そのIDのツイートは見つかりませんでした。")
+            //     } else {
+            //         throw new Error()
+            //     }
+            //     return response.json()
+            // }).then((json) => {
+            //     const tweetInfomation = document.createElement("div")
+            //     tweetInfomation.textContent = json.id + " " + json.displayName
+            //     foundtweet.appendChild(tweetInfomation)
+            // })
+            fetch("http://localhost:3000/tweets", {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(tweet),
+                body: JSON.stringify(),
             }).then((response) => {
-                if(response.status == 200){
-                } else if(response.status == 404){
-                    alert("そのIDのツイートは見つかりませんでした。")
-                } else {
-                    throw new Error()
-                }
                 return response.json()
             }).then((json) => {
-                const tweetInfomation = document.createElement("div")
-                tweetInfomation.textContent = json.id + " " + json.displayName
-                foundtweet.appendChild(tweetInfomation)
+                for(let i = 0; i < json.length; i++){
+                    if(json[i].id == tweet.tweetId){
+                        const tweetInfomation = document.createElement("div")
+                        tweetInfomation.textContent = json[i].id + " " + json[i].content
+                        foundTweet.appendChild(tweetInfomation)
+                    }
+                }
             })
         })
     </script>
