@@ -40,6 +40,10 @@
             let tweet = {
                 tweetId : document.getElementById("tweetId").value,
             }
+            let foundTweet = document.getElementById("foundTweet");
+            while(foundTweet.lastChild){
+                foundTweet.removeChild(foundTweet.lastChild)
+            }
             // fetch("http://localhost:3000/tweets/" + tweet.tweetId, {
             //     method: 'GET',
             //     headers: {

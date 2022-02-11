@@ -40,6 +40,10 @@
             let user = {
                 username : document.getElementById("username").value,
             }
+            let foundUser = document.getElementById("foundUser");
+            while(foundUser.lastChild){
+                foundUser.removeChild(foundUser.lastChild)
+            }
             // fetch("http://localhost:3000/users/" + user.username, {
             //     method: 'GET',
             //     headers: {
