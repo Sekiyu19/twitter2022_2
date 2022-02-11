@@ -12,8 +12,7 @@ const db = new sqlite3.Database("./twitter.db")
 const userFail = require("./user")
 const tweetFail = require("./tweet")
 
-app.use("/index", express.static(__dirname + "/html"))
-app.use("/users", express.static(__dirname + "/html/registerUser"))
+app.use("/twitter", express.static(__dirname + "/html"))
 
 app.get("/hello", (req, res) => {
     res.send("Hello world!")
@@ -22,22 +21,23 @@ app.get("/hello", (req, res) => {
 // ユーザー登録
 app.post("/users", (req, res) => {
     const user = req.body
-    userFail.getUser(user.userName, (err, row) => {
+    userFail.getUser(user.username, (err, row) => {
         if (err !== null) {
             console.log(err)
             res.statusCode = 500
             res.json(err)
         } else if (row === undefined) {
-            userFail.registerUser(user.userName, user.displayName, (err) => {
+            require("../test/finalTask_SCCP2021/createAccount.js").newUser(user.username, user.displayName, (err) => {
                 if (err !== null) {
-                    console.log(err)
+                    console.log(user.username)
                     res.statusCode = 500
                     res.json(err)
                 } else {
+                    res.statusCode = 200
                     res.end()
                     // const user = {
                     //     id: row.id,
-                    //     userName: row.userName,
+                    //     username: row.username,
                     //     displayName: row.displayName
                     // }
                     // res.json(user)
@@ -62,7 +62,7 @@ app.get("/users", (req, res) => {
             // const users = rows.map(row => {
             //     return {
             //         id: row.id,
-            //         userName: row.userName,
+            //         username: row.username,
             //         displayName: row.displayName
             //     }
             // })
@@ -73,8 +73,8 @@ app.get("/users", (req, res) => {
 
 // ユーザー単体取得
 app.get("/users/:username", (req, res) => {
-    const userName = Number(req.params["userName"])
-    userFail.getUser(userName, (err, row) => {
+    const username = req.params["username"]
+    userFail.getUser(username, (err, row) => {
         if (err !== null) {
             console.log(err)
             res.statusCode = 500
@@ -84,9 +84,10 @@ app.get("/users/:username", (req, res) => {
             res.end()
         } else {
             res.json(row)
+            // res.end()
             // const user = {
             //     id: row.id,
-            //     userName: row.userName,
+            //     username: row.username,
             //     displayName: row.displayName
             // }
             // res.json(user)
@@ -96,8 +97,8 @@ app.get("/users/:username", (req, res) => {
 
 // ユーザー削除
 app.delete("/users/:username", (req, res) => {
-    const userName = Number(req.params["userName"])
-    userFail.getUser(userName, (err, row) => {
+    const username = req.params["username"]
+    userFail.getUser(username, (err, row) => {
         if (err !== null) {
             console.log(err)
             res.statusCode = 500
@@ -106,7 +107,7 @@ app.delete("/users/:username", (req, res) => {
             res.statusCode = 404
             res.end()
         } else {
-            userFail.deleteUser(userName, (err) => {
+            userFail.deleteUser(username, (err) => {
                 if (err !== null) {
                     console.log(err)
                     res.statusCode = 500
@@ -122,7 +123,7 @@ app.delete("/users/:username", (req, res) => {
 // ツイート投稿
 app.post("/tweets", (req, res) => {
     const tweet = req.body
-    tweetFail.postTweet(tweet.content, (err) => {
+    tweetFail.postTweet(tweet.id, tweet.content, (err) => {
         if (err !== null) {
             console.log(err)
             res.statusCode = 500
@@ -131,7 +132,7 @@ app.post("/tweets", (req, res) => {
             res.end()
             // const user = {
             //     id: row.id,
-            //     userName: row.userName,
+            //     username: row.username,
             //     displayName: row.displayName
             // }
             // res.json(user)
@@ -151,7 +152,7 @@ app.get("/tweets", (req, res) => {
             // const users = rows.map(row => {
             //     return {
             //         id: row.id,
-            //         userName: row.userName,
+            //         username: row.username,
             //         displayName: row.displayName
             //     }
             // })
@@ -185,8 +186,8 @@ app.get("/tweets/:id", (req, res) => {
 
 // ツイート削除
 app.delete("/tweets/:id", (req, res) => {
-    const userId = Number(req.params["userId"])
-    tweetFail.getUser(userId, (err, row) => {
+    const id = req.params["id"]
+    tweetFail.getTweet(id, (err, row) => {
         if (err !== null) {
             console.log(err)
             res.statusCode = 500
@@ -195,7 +196,7 @@ app.delete("/tweets/:id", (req, res) => {
             res.statusCode = 404
             res.end()
         } else {
-            tweetFail.deleteTweet(userId, (err) => {
+            tweetFail.deleteTweet(id, (err) => {
                 if (err !== null) {
                     console.log(err)
                     res.statusCode = 500

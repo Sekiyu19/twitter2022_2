@@ -2,7 +2,7 @@ DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS tweets;
 CREATE TABLE users (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    userName NOT NULL UNIQUE,
+    username NOT NULL UNIQUE,
     displayName NOT NULL
 );
 -- INSERT INTO users (id, username, displayName)

@@ -24,31 +24,28 @@
     <div class="container">
         <h1 class="mt-3 mb-5">twitter</h1>
         <div class="d-flex justify-content-evenly">
-            <h1>ユーザー登録</h1>
+            <h1>ツイート削除</h1>
             <div>
-                ユーザー名<br>
-                <input type="text" id="username"></input><br><br>
-                表示名<br>
-                <input type="text" id="displayName"></input>
-                <button id="register" type="submit">登録</button>
+                ツイートID<br>
+                <input type="text" id="tweetId"></input>
+                <button id="delete" type="submit">削除</button>
             </div>
             <script>
-                document.getElementById("register").addEventListener("click", () => {
-                    let user = {
-                        username : document.getElementById("username").value,
-                        displayName : document.getElementById("displayName").value,
+                document.getElementById("delete").addEventListener("click", () => {
+                    let tweet = {
+                        id : document.getElementById("tweetId").value,
                     }
-                    fetch("http://localhost:3000/users", {
-                        method: 'POST',
+                    fetch("http://localhost:3000/tweets/" + tweet.id, {
+                        method: 'DELETE',
                         headers: {
                             'Content-Type': 'application/json'
                         },
-                        body: JSON.stringify(user),
+                        body: JSON.stringify(tweet),
                     }).then((response) => {
                         if(response.status == 200){
                             window.location.replace("./index.html")
-                        } else if(response.status == 409){
-                            alert("そのユーザー名は既に使用されています。")
+                        } else if(response.status == 404){
+                            alert("そのIDのツイートは見つかりませんでした。")
                         } else {
                             throw new Error()
                         }

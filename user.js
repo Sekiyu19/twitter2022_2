@@ -5,9 +5,9 @@ const sqlite3 = require("sqlite3")
 const db = new sqlite3.Database("./twitter.db")
 
 // ユーザー登録
-exports.registerUser = (userName, displayName, callback) => {
+exports.registerUser = (username, displayName, callback) => {
     db.serialize(() => {
-        db.run("INSERT INTO users (userName, displayName) VALUES (?, ?)", userName, displayName, (err) => {
+        db.run("INSERT INTO users (username, displayName) VALUES (?, ?)", username, displayName, (err) => {
             if (err !== null) {
                 callback(err)
             } else {
@@ -27,7 +27,7 @@ exports.getAllUsers = (callback) => {
                 const users = rows.map(row => {
                     return {
                         id: row.id,
-                        userName: row.userName,
+                        username: row.username,
                         displayName: row.displayName
                     }
                 })
@@ -38,9 +38,9 @@ exports.getAllUsers = (callback) => {
 }
 
 // ユーザー単体取得
-exports.getUser = (userName, callback) => {
+exports.getUser = (username, callback) => {
     db.serialize(() => {
-        db.get("SELECT * FROM users WHERE userName = ?", userName, (err, row) => {
+        db.get("SELECT * FROM users WHERE username = ?", username, (err, row) => {
             if (err !== null) {
                 callback(err, undefined)
             } else if (row === undefined) {
@@ -48,7 +48,7 @@ exports.getUser = (userName, callback) => {
             } else {
                 const user = {
                     id: row.id,
-                    userName: row.userName,
+                    username: row.username,
                     displayName: row.displayName
                 }
                 callback(null, user)
@@ -58,9 +58,9 @@ exports.getUser = (userName, callback) => {
 }
 
 // ユーザー削除
-exports.deleteUser = (userName, callback) => {
+exports.deleteUser = (username, callback) => {
     db.serialize(() => {
-        db.run("DELETE FROM users WHERE userName = ?", userName, (err) => {
+        db.run("DELETE FROM users WHERE username = ?", username, (err) => {
             if (err !== null) {
                 callback(err)
             } else {
