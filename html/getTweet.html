@@ -84,9 +84,9 @@
                         }).then((response) => {
                             return response.json()
                         }).then((user) => {
-                            for(let i = 0; i < json.length; i++){
-                                if(user[i].id == json[i].userId){
-                                    tweetInfomation.textContent = json[i].id + " " + json[i].content + " " + user[i].displayName
+                            for(let j = 0; j < json.length; j++){
+                                if(user[j].id == json[i].userId){
+                                    tweetInfomation.textContent = json[i].id + " " + json[i].content + " " + user[j].displayName
                                 }
                             }
                         })
