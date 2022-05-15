@@ -75,7 +75,21 @@
                 for(let i = 0; i < json.length; i++){
                     if(json[i].id == tweet.tweetId){
                         const tweetInfomation = document.createElement("div")
-                        tweetInfomation.textContent = json[i].id + " " + json[i].content
+                        fetch("http://localhost:3000/users", {
+                            method: 'GET',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(),
+                        }).then((response) => {
+                            return response.json()
+                        }).then((user) => {
+                            for(let i = 0; i < json.length; i++){
+                                if(user[i].id == json[i].userId){
+                                    tweetInfomation.textContent = json[i].id + " " + json[i].content + " " + user[i].displayName
+                                }
+                            }
+                        })
                         foundTweet.appendChild(tweetInfomation)
                     }
                 }
